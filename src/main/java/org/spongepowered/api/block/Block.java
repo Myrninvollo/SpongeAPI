@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.spongepowered.api.world;
+package org.spongepowered.api.block;
 
 /**
  * Describes a voxel. Child classes define specific functionality.
@@ -33,5 +33,5 @@ public interface Block {
      * Ex. Minecraft registers stone as "minecraft:stone"
      * @return The id
      */
-    public String getID();
+    String getID();
 }

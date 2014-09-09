@@ -23,6 +23,8 @@
  */
 package org.spongepowered.api.world;
 
+import org.spongepowered.api.block.Block;
+
 import java.util.UUID;
 
 /**
@@ -35,14 +37,14 @@ public interface World {
      *
      * @return The unique id or UUID
      */
-    public UUID getUniqueID();
+    UUID getUniqueID();
 
     /**
      * Gets the name of the world.
      *
      * @return The world name
      */
-    public String getName();
+    String getName();
 
     /**
      * Gets a specific {@link Chunk} by its x/z chunk coordinate.
@@ -51,14 +53,14 @@ public interface World {
      * @param z Z chunk coordinate
      * @return The chunk
      */
-    public Chunk getChunk(int x, int z);
+    Chunk getChunk(int x, int z);
 
     /**
-     * Gets a specific {@link org.spongepowered.api.world.Block} by its x/y/z block coordinate.
+     * Gets a specific {@link org.spongepowered.api.block.Block} by its x/y/z block coordinate.
      * @param x X block coordinate
      * @param y Y block coordinate
      * @param z Z block coordinate
      * @return The block
      */
-    public Block getBlock(int x, int y, int z);
+    Block getBlock(int x, int y, int z);
 }

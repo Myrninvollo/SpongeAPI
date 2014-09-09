@@ -21,41 +21,18 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.spongepowered.api.world;
+package org.spongepowered.api.event.state;
 
-import org.spongepowered.api.block.Block;
+import org.spongepowered.api.Game;
+import org.spongepowered.api.GameState;
 
-/**
- * Chunks are 16x256x16 (x/y/z) containers of {@link org.spongepowered.api.block.Block}s
- * in a specific {@link World}. Chunks use chunk coordinates, which
- * are simply block coordinates divided by 16 (one chunk every 16 blocks).
- */
-public interface Chunk {
+public class SpongePostInitializationEvent extends SpongeStateEvent {
+    public SpongePostInitializationEvent(Game game) {
+        super(game);
+    }
 
-    /**
-     * Gets the x chunk coordinate of this chunk as it appears in the
-     * {@link World}.
-     *
-     * @return X chunk coordinate
-     */
-    int getX();
-
-    /**
-     * Gets the z chunk coordinate of this chunk as it appears in the
-     * {@link World}.
-     *
-     * @return Z chunk coordinate
-     */
-    int getZ();
-
-    /**
-     * Gets the {@link org.spongepowered.api.block.Block} at the block coordinate x/y/z.
-     *
-     * @param x X block coordinate
-     * @param y Y block coordinate
-     * @param z Z block coordinate
-     * @throws IllegalArgumentException If coordinates given are outside the chunk's bounds
-     * @return The block
-     */
-    Block getBlock(int x, int y, int z);
+    @Override
+    public GameState getState() {
+        return GameState.POST_INITIALIZATION;
+    }
 }
