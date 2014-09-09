@@ -21,58 +21,27 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.spongepowered.api.world;
+package org.spongepowered.api.event.block;
 
+import org.spongepowered.api.Game;
 import org.spongepowered.api.block.Block;
-
-import java.util.UUID;
+import org.spongepowered.api.event.SpongeEvent;
 
 /**
- * A loaded Minecraft world
+ * Abstract class for map block events
  */
-public interface World {
+public abstract class BlockEvent extends SpongeEvent {
+
+    public final Block block;
 
     /**
-     * Gets the unique id ({@link java.util.UUID} for this world.
+     * Create an event involving a {@link Block}
      *
-     * @return The unique id or UUID
+     * @param game Game instance
+     * @param block The {@link Block} this event impacts
      */
-    UUID getUniqueID();
-
-    /**
-     * Gets the name of the world.
-     *
-     * @return The world name
-     */
-    String getName();
-
-    /**
-     * Gets an already-loaded {@link Chunk} by its x/z chunk coordinate, or
-     * null if it's not available
-     *
-     * @param cx X chunk coordinate
-     * @param cz Z chunk coordinate
-     * @return The chunk
-     */
-    Chunk getChunk(int cx, int cz);
-
-    /**
-     * Loads and returns a {@link Chunk}. If the chunk does not
-     * exist, it will be generated unless `shouldGenerate` is false.
-     *
-     * @param cx X chunk coordinate
-     * @param cz Z chunk coordinate
-     * @param shouldGenerate Generate if new
-     * @return Chunk loaded/generated
-     */
-    Chunk loadChunk(int cx, int cz, boolean shouldGenerate);
-
-    /**
-     * Gets a specific {@link org.spongepowered.api.block.Block} by its x/y/z block coordinate.
-     * @param x X block coordinate
-     * @param y Y block coordinate
-     * @param z Z block coordinate
-     * @return The block
-     */
-    Block getBlock(int x, int y, int z);
+    public BlockEvent(Game game, Block block){
+        super(game);
+        this.block = block;
+    }
 }
