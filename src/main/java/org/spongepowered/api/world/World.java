@@ -21,28 +21,44 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.spongepowered.api.event;
+package org.spongepowered.api.world;
 
-public interface EventManager {
-    /**
-     * Registers an object to receive {@link SpongeEvent}s.
-     *
-     * @param obj The object
-     */
-    public void register(Object obj);
+import java.util.UUID;
 
-    /**
-     * Un-registers an object from receiving {@link SpongeEvent}s.
-     *
-     * @param obj The object
-     */
-    public void unregister(Object obj);
+/**
+ * A loaded Minecraft world
+ */
+public interface World {
 
     /**
-     * Calls a {@link SpongeEvent} to all objects that handle it.
+     * Gets the unique id ({@link java.util.UUID} for this world.
      *
-     * @param event The event
-     * @return True if canceled, false if not
+     * @return The unique id or UUID
      */
-    public boolean call(SpongeEvent event);
+    public UUID getUniqueID();
+
+    /**
+     * Gets the name of the world.
+     *
+     * @return The world name
+     */
+    public String getName();
+
+    /**
+     * Gets a specific {@link Chunk} by its x/z chunk coordinate.
+     *
+     * @param x X chunk coordinate
+     * @param z Z chunk coordinate
+     * @return The chunk
+     */
+    public Chunk getChunk(int x, int z);
+
+    /**
+     * Gets a specific {@link org.spongepowered.api.world.Block} by its x/y/z block coordinate.
+     * @param x X block coordinate
+     * @param y Y block coordinate
+     * @param z Z block coordinate
+     * @return The block
+     */
+    public Block getBlock(int x, int y, int z);
 }
