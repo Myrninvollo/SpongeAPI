@@ -21,22 +21,24 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.spongepowered.api.event.block;
+package org.spongepowered.api.event;
 
+import org.spongepowered.api.Game;
 
-import org.spongepowered.api.block.Block;
-import org.spongepowered.api.event.Event;
-
-/**
- * Describes events which contain a {@link Block}
- */
-public interface BlockEvent extends Event {
+public interface Event {
 
     /**
-     * Get {@link Block} included in the event
-     * TODO: use voxel instead to provide the location and block at once?
+     * Gets the {@link org.spongepowered.api.Game}.
      *
-     * @return Event {@link Block}
+     * @return The game
      */
-    Block getBlock();
+    Game getGame();
+
+    /**
+     * Gets a simple name of the current class
+     *
+     * @return String name
+     */
+    String getSimpleName();
+
 }

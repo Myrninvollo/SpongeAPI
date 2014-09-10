@@ -21,22 +21,13 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.spongepowered.api.event.block;
+package org.spongepowered.api.event.state;
 
-
-import org.spongepowered.api.block.Block;
 import org.spongepowered.api.event.Event;
 
 /**
- * Describes events which contain a {@link Block}
+ * Parent interface for all state events
  */
-public interface BlockEvent extends Event {
+public interface StateEvent extends Event {
 
-    /**
-     * Get {@link Block} included in the event
-     * TODO: use voxel instead to provide the location and block at once?
-     *
-     * @return Event {@link Block}
-     */
-    Block getBlock();
 }

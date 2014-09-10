@@ -60,8 +60,8 @@ public interface World {
      * Loads and returns a {@link Chunk}. If the chunk does not
      * exist, it will be generated unless `shouldGenerate` is false.
      *
-     * @param cx X chunk coordinate
-     * @param cz Z chunk coordinate
+     * @param cx             X chunk coordinate
+     * @param cz             Z chunk coordinate
      * @param shouldGenerate Generate if new
      * @return Chunk loaded/generated
      */
@@ -69,10 +69,21 @@ public interface World {
 
     /**
      * Gets a specific {@link org.spongepowered.api.block.Block} by its x/y/z block coordinate.
+     *
      * @param x X block coordinate
      * @param y Y block coordinate
      * @param z Z block coordinate
      * @return The block
      */
     Block getBlock(int x, int y, int z);
+
+    /**
+     * Gets a specific {@link org.spongepowered.api.world.Voxel} by its x/y/z block coordinate.
+     *
+     * @param x X block coordinate
+     * @param y Y block coordinate
+     * @param z Z block coordinate
+     * @return The voxel
+     */
+    Voxel getVoxel(int x, int y, int z);
 }

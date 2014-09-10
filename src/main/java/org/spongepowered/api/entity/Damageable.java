@@ -21,19 +21,26 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.spongepowered.api.plugin;
+package org.spongepowered.api.entity;
 
-/**
- * Thrown by the implementation if it determines that a {@link org.spongepowered.api.plugin.Plugin} being loaded is invalid.
- */
-public class InvalidPluginException extends Exception {
-    private static final long serialVersionUID = 15816838168L;
+public interface Damageable {
 
-    public InvalidPluginException(String message) {
-        super(message);
-    }
+    /**
+     * Damages the entity by a specified amount;
+     *
+     * @param damage the damage amount
+     */
+    void damage(double amount);
 
-    public InvalidPluginException(String message, Throwable cause) {
-        super(message, cause);
-    }
+    /**
+     * Gets the health of the entity
+     *
+     * @return health of the {@code Damageable}
+     */
+    double getHealth();
+
+    /**
+     * Sets the Health of the {@code Damageable}
+     */
+    void setHealth(double health);
 }

@@ -54,8 +54,19 @@ public interface Chunk {
      * @param x X block coordinate
      * @param y Y block coordinate
      * @param z Z block coordinate
-     * @throws IllegalArgumentException If coordinates given are outside the chunk's bounds
      * @return The block
+     * @throws IllegalArgumentException If coordinates given are outside the chunk's bounds
      */
     Block getBlock(int x, int y, int z);
+
+    /**
+     * Gets the {@link org.spongepowered.api.world.Voxel} at the block coordinate x/y/z.
+     *
+     * @param x X block coordinate
+     * @param y Y block coordinate
+     * @param z Z block coordinate
+     * @return The voxel
+     * @throws IllegalArgumentException If coordinates given are outside the chunk's bounds
+     */
+    Voxel getVoxel(int x, int y, int z);
 }

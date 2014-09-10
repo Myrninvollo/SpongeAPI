@@ -21,22 +21,13 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.spongepowered.api.event.block;
+package org.spongepowered.api.event.state;
 
-
-import org.spongepowered.api.block.Block;
-import org.spongepowered.api.event.Event;
+import org.spongepowered.api.GameState;
 
 /**
- * Describes events which contain a {@link Block}
+ * Represents {@link GameState#LOAD_COMPLETE} event
  */
-public interface BlockEvent extends Event {
+public interface LoadCompleteEvent extends StateEvent {
 
-    /**
-     * Get {@link Block} included in the event
-     * TODO: use voxel instead to provide the location and block at once?
-     *
-     * @return Event {@link Block}
-     */
-    Block getBlock();
 }
