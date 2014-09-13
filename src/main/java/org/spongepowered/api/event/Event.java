@@ -1,7 +1,8 @@
-/**
- * This file is part of SpongeAPI, licensed under the MIT License (MIT).
+/*
+ * This file is part of Sponge, licensed under the MIT License (MIT).
  *
- * Copyright (c) 2014 SpongePowered <http://spongepowered.org/>
+ * Copyright (c) SpongePowered.org <http://www.spongepowered.org>
+ * Copyright (c) contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,10 +22,14 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+
 package org.spongepowered.api.event;
 
 import org.spongepowered.api.Game;
 
+/**
+ * A game event. A game event can be any sort of event from anywhere, and can be anything.
+ */
 public interface Event {
 
     /**
@@ -44,14 +49,14 @@ public interface Event {
     /**
      * Gets if the {@link Event} can be cancelled
      * 
-     * @return
+     * @return Can this event be cancelled
      */
     boolean isCancellable();
     
     /**
      * Gets if the {@link Event} has been cancelled
      * 
-     * @return
+     * @return Is this event cancelled
      */
     boolean isCancelled();
     
@@ -59,7 +64,6 @@ public interface Event {
      * Sets the cancelled state of the {@link Event}
      * 
      * @param cancel the new cancelled state
-     * @return
      */
     void setCancelled(boolean cancel);
 
@@ -67,14 +71,13 @@ public interface Event {
      * Sets the {@link Result} of the {@link Event}
      * 
      * @param result the result
-     * @return
      */
     void setResult(Result result);
     
     /**
      * Gets the {@link Result} of the {@link Event}
      * 
-     * @return
+     * @return The result of this event
      */
     Result getResult();
 

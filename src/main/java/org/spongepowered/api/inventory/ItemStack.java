@@ -1,7 +1,8 @@
-/**
- * This file is part of SpongeAPI, licensed under the MIT License (MIT).
+/*
+ * This file is part of Sponge, licensed under the MIT License (MIT).
  *
- * Copyright (c) 2014 SpongePowered <http://spongepowered.org/>
+ * Copyright (c) SpongePowered.org <http://www.spongepowered.org>
+ * Copyright (c) contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,12 +22,12 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+
 package org.spongepowered.api.inventory;
 
 import org.spongepowered.api.item.Item;
 
 import java.io.Serializable;
-import java.util.List;
 
 /**
  * Represents a stack of a specific {@link Item}. Allows comparison to another
@@ -44,7 +45,7 @@ public interface ItemStack extends Comparable<ItemStack>, Serializable {
     /**
      * Set the damage/durability
      *
-     * @param damage
+     * @param damage The value that the damage should be set to
      */
     void setDamage(short damage);
 
@@ -81,7 +82,7 @@ public interface ItemStack extends Comparable<ItemStack>, Serializable {
     int getMaxStackQuantity();
 
     /**
-     * Set the max quantity per stack. This overrides, and is entirely separate from {@link org.spongepowered.api.item.Item#getMaxStackQuantity()
+     * Set the max quantity per stack. This overrides, and is entirely separate from {@link org.spongepowered.api.item.Item#getMaxStackQuantity()}
      *
      * @param quantity  Max stack quantity
      */

@@ -1,7 +1,8 @@
-/**
- * This file is part of SpongeAPI, licensed under the MIT License (MIT).
+/*
+ * This file is part of Sponge, licensed under the MIT License (MIT).
  *
- * Copyright (c) 2014 SpongePowered <http://spongepowered.org/>
+ * Copyright (c) SpongePowered.org <http://www.spongepowered.org>
+ * Copyright (c) contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,6 +22,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+
 package org.spongepowered.api.math;
 
 import java.io.Serializable;
@@ -30,6 +32,7 @@ import java.io.Serializable;
  * It is immutable and all vectors returned by the methods are new instances.
  */
 public interface Vector3d extends Comparable<Vector3d>, Serializable, Cloneable {
+
     /**
      * Returns the x component.
      *
@@ -201,7 +204,7 @@ public interface Vector3d extends Comparable<Vector3d>, Serializable, Cloneable 
     /**
      * Raises each component of this vector by the value, returning the results as new vector.
      *
-     * @param a The value to raise by
+     * @param power The value to raise by
      * @return The results of the operation as a new vector
      */
     Vector3d pow(double power);
@@ -341,14 +344,14 @@ public interface Vector3d extends Comparable<Vector3d>, Serializable, Cloneable 
     /**
      * Returns the axis with the minimal value.
      *
-     * @return {@link int} axis with minimal value
+     * @return The axis with minimal value
      */
     int getMinAxis();
 
     /**
      * Returns the axis with the maximum value.
      *
-     * @return {@link int} axis with maximum value
+     * @return The axis with maximum value
      */
     int getMaxAxis();
 
@@ -388,10 +391,13 @@ public interface Vector3d extends Comparable<Vector3d>, Serializable, Cloneable 
      */
     Vector3f toFloat();
 
+    @Override
     int compareTo(Vector3d v);
 
+    @Override
     boolean equals(Object o);
 
+    @Override
     int hashCode();
 
     /**
@@ -406,5 +412,7 @@ public interface Vector3d extends Comparable<Vector3d>, Serializable, Cloneable 
      *
      * @return This vector as a string
      */
+    @Override
     String toString();
+
 }

@@ -1,7 +1,8 @@
-/**
- * This file is part of SpongeAPI, licensed under the MIT License (MIT).
+/*
+ * This file is part of Sponge, licensed under the MIT License (MIT).
  *
- * Copyright (c) 2014 SpongePowered <http://spongepowered.org/>
+ * Copyright (c) SpongePowered.org <http://www.spongepowered.org>
+ * Copyright (c) contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,24 +22,24 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+
 package org.spongepowered.api;
 
 import org.apache.logging.log4j.Logger;
-
 import org.spongepowered.api.entity.Player;
 import org.spongepowered.api.event.EventManager;
 import org.spongepowered.api.plugin.PluginManager;
 import org.spongepowered.api.world.World;
 
+import javax.annotation.Nullable;
 import java.util.Collection;
 import java.util.UUID;
-
-import javax.annotation.Nullable;
 
 /**
  * The core accessor of the API. The implementation uses this to pass constructed objects.
  */
 public interface Game {
+
     /**
      * Gets the {@link org.apache.logging.log4j.Logger} of the implementation.
      *
@@ -74,7 +75,7 @@ public interface Game {
      */
     GameRegistry getRegistry();
 
-    /*
+    /**
      * Gets the {@link Player}s currently online
      *
      * @return a {@link Collection} of online players
@@ -91,7 +92,8 @@ public interface Game {
     /**
      * Gets a {@link Player} by their unique id
      *
-     * @param uniqueId
+     * @param uniqueId The UUID to get the player from
+     * 
      * @return {@link Player} or null if none found
      */
     @Nullable
@@ -140,4 +142,5 @@ public interface Game {
      * @return The implementation version
      */
     String getImplementationVersion();
+
 }
