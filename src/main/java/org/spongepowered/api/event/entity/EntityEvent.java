@@ -22,21 +22,21 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
 package org.spongepowered.api.event.entity;
 
 import org.spongepowered.api.entity.Entity;
-import org.spongepowered.api.event.Event;
+import org.spongepowered.api.event.GameEvent;
 
 /**
- * Describes events which contain an {@link Entity}
+ * An event that whose target happens to be an entity.
  */
-public interface EntityEvent extends Event {
+public interface EntityEvent extends GameEvent {
 
     /**
-     * Gets the {@link Entity} involved
+     * Returns the primary entity involved in this event that performs the action.
      *
-     * @return {@link Entity} involved
+     * @return The entity performing the action
      */
     Entity getEntity();
+
 }

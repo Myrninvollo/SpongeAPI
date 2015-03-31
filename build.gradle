@@ -1,6 +1,7 @@
 // Gradle repositories and dependencies
 buildscript {
     repositories {
+        mavenCentral()
         jcenter()
     }
     dependencies {
@@ -22,7 +23,7 @@ defaultTasks 'licenseFormat', 'check', 'build'
 // Basic project information
 group = 'org.spongepowered'
 archivesBaseName = 'spongeapi'
-version = '1.0.0-SNAPSHOT'
+version = '1.1-SNAPSHOT'
 
 // Extended project information
 ext.projectName = 'SpongeAPI'
@@ -44,12 +45,32 @@ targetCompatibility = '1.6'
 // Project repositories
 repositories {
     mavenCentral()
+
+    // Add Sponge repo for custom checkstyle implementation to fix some wrong warnings
+    maven { url 'http://repo.spongepowered.org/maven' }
+}
+
+configurations {
+    deployerJars // maven stuff
 }
 
 // Project dependencies
 dependencies {
-    compile 'org.apache.logging.log4j:log4j-api:2.0-beta9'
+    compile 'org.slf4j:slf4j-api:1.7.7'
+    compile 'com.google.guava:guava:17.0'
     compile 'com.google.code.findbugs:jsr305:1.3.9'
+    compile 'com.google.inject:guice:4.0-beta5'
+    compile 'ninja.leaping.configurate:configurate-hocon:1.0.1'
+    compile 'com.flowpowered:flow-math:1.0.0'
+    compile 'org.ow2.asm:asm:5.0.3'
+    testCompile 'junit:junit:4.11'
+    testCompile 'org.hamcrest:hamcrest-library:1.3'
+    testCompile 'org.mockito:mockito-core:1.9.0'
+
+    checkstyle 'org.spongepowered:checkstyle:6.1.1-sponge1'
+    
+    // maven
+    deployerJars 'org.apache.maven.wagon:wagon-ftp:2.7'
 }
 
 // Filter, process, and include resources
@@ -75,21 +96,46 @@ license {
     }
 }
 
+test {
+    testLogging {
+        exceptionFormat = 'full'
+    }
+}
+
 checkstyle {
+    configFile = file('checkstyle.xml')
     configProperties = [
-        "name" : project.name,
-        "organization" : project.organization,
-        "url" : project.url,
-        "year" : project.inceptionYear
+            "name": project.name,
+            "organization": project.organization,
+            "url": project.url,
+            "year": project.inceptionYear,
+            "basedir": project.projectDir,
+            "severity": 'warning'
     ]
-    configFile = file("checkstyle.xml")
 }
 
 // Source compiler configuration
 configure([compileJava, compileTestJava]) {
-    options.compilerArgs += [ '-Xlint:all', '-Xlint:-path' ]
+    options.compilerArgs += ['-Xlint:all', '-Xlint:-path']
     options.deprecation = true
     options.encoding = 'utf8'
+}
+
+javadoc {
+   options.jFlags('-Xms256m', '-Xmx512m')
+   options.links("http://docs.guava-libraries.googlecode.com/git-history/v17.0/javadoc/",
+                 "http://google.github.io/guice/api-docs/latest/javadoc/",
+                 "http://flowpowered.com/math/",
+                 "http://asm.ow2.org/asm50/javadoc/user/",
+                 "http://www.slf4j.org/apidocs/",
+                 "http://docs.oracle.com/javase/6/docs/api/")
+}
+
+if (JavaVersion.current().isJava8Compatible()) {
+    tasks.withType(Javadoc) {
+        // disable the crazy super-strict doclint tool in Java 8
+        options.addStringOption('Xdoclint:none', '-quiet')
+    }
 }
 
 // JAR manifest configuration
@@ -98,5 +144,69 @@ jar.manifest.mainAttributes(
         "Created-By": System.properties['java.vm.version'] + " (" + System.properties['java.vm.vendor'] + ")",
         "Implementation-Title": name,
         "Implementation-Version": version + "+" + ciSystem + "-b" + buildNumber + ".git-" + commit,
-        "Implementation-Vendor": url)
+        "Implementation-Vendor": url,
+        "Main-Class": "org.spongepowered.api.util.InformativeMain")
 
+task sourceJar(type: Jar) {
+	from sourceSets.main.java
+	from sourceSets.main.resources
+	classifier = "sources"
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+	from javadoc.destinationDir
+	classifier = "javadoc"
+}
+
+artifacts {
+    archives jar
+    archives sourceJar
+    archives javadocJar
+}
+
+uploadArchives {
+    repositories {
+
+        mavenDeployer {
+            configuration = configurations.deployerJars
+
+            if (project.hasProperty("chRepo"))
+            {
+                repository(url: project.chRepo) {
+                    authentication(userName: project.chUsername, password: project.chPassword)
+                }
+            }
+
+            pom {
+                groupId = project.group
+                version = project.version
+                artifactId = project.archivesBaseName
+                project {
+                    name project.archivesBaseName
+                    packaging 'jar'
+                    description 'Sponge API'
+                    url 'http://www.spongepowered.org/'
+
+                    scm {
+                        url 'https://github.com/SpongePowered/SpongeAPI'
+                        connection 'scm:git:git://github.com/SpongePowered/SpongeAPI.git'
+                        developerConnection 'scm:git:git@github.com:SpongePowered/SpongeAPI.git'
+                    }
+
+                    issueManagement {
+                        system 'youtrack'
+                        url 'https://issues.spongepowered.org/'
+                    }
+
+                    licenses {
+                        license {
+                            name 'MIT license'
+                            url 'http://opensource.org/licenses/MIT'
+                            distribution 'repo'
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

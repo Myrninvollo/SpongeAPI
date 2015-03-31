@@ -25,16 +25,13 @@
 
 package org.spongepowered.api;
 
-import org.apache.logging.log4j.Logger;
-import org.spongepowered.api.entity.Player;
-import org.spongepowered.api.event.EventManager;
+import com.google.common.base.Optional;
 import org.spongepowered.api.plugin.PluginManager;
-import org.spongepowered.api.world.World;
-
-import java.util.Collection;
-import java.util.UUID;
-
-import javax.annotation.Nullable;
+import org.spongepowered.api.service.ServiceManager;
+import org.spongepowered.api.service.command.CommandService;
+import org.spongepowered.api.service.event.EventManager;
+import org.spongepowered.api.service.scheduler.AsynchronousScheduler;
+import org.spongepowered.api.service.scheduler.SynchronousScheduler;
 
 /**
  * The core accessor of the API. The implementation uses this to pass
@@ -43,19 +40,18 @@ import javax.annotation.Nullable;
 public interface Game {
 
     /**
-     * Gets the {@link Logger} of the implementation.
-     *
-     * @return The logger
-     */
-    Logger getLogger();
-
-    /**
      * Returns the {@link Platform} the implementation
      * is executing from.
      *
      * @return The platform
      */
     Platform getPlatform();
+
+    /**
+     * Gets the running {@link Server}, if any.
+     * @return The server
+     */
+    Optional<Server> getServer();
 
     /**
      * Gets the {@link PluginManager}.
@@ -79,64 +75,43 @@ public interface Game {
     GameRegistry getRegistry();
 
     /**
-     * Gets the {@link Player}s currently online
+     * Get the game's instance of the service manager, which is the gateway
+     * to various services provided by Sponge (command registration and so on).
      *
-     * @return a {@link Collection} of online players
+     * <p>Services registered by other plugins may be available too.</p>
+     *
+     * @return The service manager
      */
-    Collection<Player> getOnlinePlayers();
+    ServiceManager getServiceManager();
 
     /**
-     * Gets the max players allowed on this server
+     * Gets the {@link org.spongepowered.api.service.scheduler.SynchronousScheduler}.
      *
-     * @return Maximum number of connected players
+     * @return The scheduler
      */
-    int getMaxPlayers();
+    SynchronousScheduler getSyncScheduler();
 
     /**
-     * Gets a {@link Player} by their unique id
+     * Gets the {@link org.spongepowered.api.service.scheduler.AsynchronousScheduler}.
      *
-     * @param uniqueId The UUID to get the player from
-     * @return {@link Player} or null if none found
+     * @return The scheduler
      */
-    @Nullable
-    Player getPlayer(UUID uniqueId);
+    AsynchronousScheduler getAsyncScheduler();
 
     /**
-     * Gets all currently loaded {@link World}s.
+     * Get the command dispatcher used for registering and dispatching
+     * registered commands.
      *
-     * @return Collection of loaded worlds
+     * @return The command dispatcher
      */
-    Collection<World> getWorlds();
-
-    /**
-     * Gets a loaded {@link World} by its unique id ({@link UUID}).
-     *
-     * @param uniqueId UUID to lookup
-     * @return The world or null if not found
-     */
-    World getWorld(UUID uniqueId);
-
-    /**
-     * Gets a loaded {@link World} by name
-     *
-     * @param worldName Name to lookup
-     * @return The world or null if not found
-     */
-    World getWorld(String worldName);
-
-    /**
-     * Sends the given message to all online players
-     *
-     * @param message The message to send
-     */
-    void broadcastMessage(String message);
+    CommandService getCommandDispatcher();
 
     /**
      * Gets the API version.
      *
      * @return The API version
      */
-    String getAPIVersion();
+    String getApiVersion();
 
     /**
      * Gets the implementation version.
@@ -144,5 +119,12 @@ public interface Game {
      * @return The implementation version
      */
     String getImplementationVersion();
+
+    /**
+     * Gets the Minecraft version of this game.
+     *
+     * @return The Minecraft version
+     */
+    MinecraftVersion getMinecraftVersion();
 
 }

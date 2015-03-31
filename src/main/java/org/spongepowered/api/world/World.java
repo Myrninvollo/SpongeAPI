@@ -25,48 +25,189 @@
 
 package org.spongepowered.api.world;
 
-import org.spongepowered.api.entity.EntityUniverse;
+import com.flowpowered.math.vector.Vector3i;
+import com.google.common.base.Optional;
+import org.spongepowered.api.effect.Viewer;
+import org.spongepowered.api.entity.Entity;
+import org.spongepowered.api.service.permission.context.Contextual;
+import org.spongepowered.api.util.Identifiable;
+import org.spongepowered.api.world.difficulty.Difficulty;
+import org.spongepowered.api.world.extent.Extent;
+import org.spongepowered.api.world.gen.WorldGenerator;
+import org.spongepowered.api.world.storage.WorldStorage;
 
+import java.util.Map;
 import java.util.UUID;
 
 /**
- * A loaded Minecraft world
+ * A loaded Minecraft world.
  */
-public interface World extends EntityUniverse, VoxelVolume {
+public interface World extends Extent, Viewer, Contextual, Identifiable {
 
     /**
-     * Gets the unique id ({@link UUID}) for this world.
+     * Gets the {@link Difficulty} setting for this world.
      *
-     * @return The unique id or UUID
+     * @return Difficulty of the world
      */
-    UUID getUniqueID();
+    Difficulty getDifficulty();
+
+    /**
+     * Sets the {@link Difficulty} setting for this world.
+     *
+     * @param difficulty Difficulty of the world
+     */
+    void setDifficulty(Difficulty difficulty);
 
     /**
      * Gets the name of the world.
      *
+     * <p>The world name may randomly generated or user-defined. It may or
+     * may not be safe to be used in a filename.</p>
+     *
      * @return The world name
+     * @see #getUniqueId() A method to get a unique identifier
      */
     String getName();
 
     /**
-     * Gets an already-loaded {@link Chunk} by its x/z chunk coordinate, or
-     * null if it's not available
+     * Get the loaded chunk at the given position.
      *
-     * @param cx X chunk coordinate
-     * @param cz Z chunk coordinate
-     * @return The chunk
+     * @param position The position
+     * @return The chunk, if available
      */
-    Chunk getChunk(int cx, int cz);
+    Optional<Chunk> getChunk(Vector3i position);
 
     /**
-     * Loads and returns a {@link Chunk}. If the chunk does not exist, it will
-     * be generated unless `shouldGenerate` is false.
+     * Get the chunk at the given position if it exists or if
+     * {@code shouldGenerate} is true and the chunk is generated.
      *
-     * @param cx X chunk coordinate
-     * @param cz Z chunk coordinate
-     * @param shouldGenerate Generate if new
-     * @return Chunk loaded/generated
+     * @param position The position
+     * @param shouldGenerate True to generate a new chunk
+     * @return The loaded or generated chunk, if already generated
      */
-    Chunk loadChunk(int cx, int cz, boolean shouldGenerate);
+    Optional<Chunk> loadChunk(Vector3i position, boolean shouldGenerate);
+
+    /**
+     * Unloads the given chunk from the world. Returns a {@code boolean}
+     * flag for whether the operation was successful.
+     *
+     * @param chunk The chunk to unload
+     * @return Whether the operation was successful
+     */
+    boolean unloadChunk(Chunk chunk);
+
+    /**
+     * Returns a Collection of all actively loaded chunks in this world.
+     *
+     * <p>The ordering of the returned chunks is undefined.</p>
+     *
+     * @return The loaded chunks
+     */
+    Iterable<Chunk> getLoadedChunks();
+
+    /**
+     * Gets the entity whose {@link UUID} matches the provided id, possibly
+     * returning no entity if the entity is not loaded or non-existant.
+     *
+     * <p>For world implementations, only some parts of the world is usually
+     * loaded, so this method may return no entity if the entity is not
+     * loaded.</p>
+     *
+     * @param uuid The unique id
+     * @return An entity, if available
+     */
+    Optional<Entity> getEntity(UUID uuid);
+
+    /**
+     * Gets the world border for the world.
+     *
+     * @return The world border
+     */
+    WorldBorder getWorldBorder();
+
+    /**
+     * Gets the specified GameRule value.
+     **
+     * @param gameRule The name of the GameRule.
+     * @return The GameRule value, if it exists.
+     */
+    Optional<String> getGameRule(String gameRule);
+
+    /**
+     * Sets the specified GameRule value. If one with this name
+     * does not exist, it will be created.
+     *
+     * @param gameRule The name of the GameRule.
+     * @param value The value to set the GameRule to.
+     */
+    void setGameRule(String gameRule, String value);
+
+    /**
+     * Gets a {@link Map} of all GameRules with values in this world.
+     **
+     * @return A collection of GameRules.
+     */
+    Map<String, String> getGameRules();
+
+    /**
+     * Returns the {@link Dimension} of this world.
+     *
+     * @return The {@link Dimension}
+     */
+    Dimension getDimension();
+
+    /**
+     * Gets the random seed for this world.
+     *
+     * @return The seed
+     */
+    long getWorldSeed();
+
+    /**
+     * Sets the random seed for this world.
+     *
+     * @param seed The seed
+     */
+    void setSeed(long seed);
+
+    /**
+     * Gets the {@link WorldGenerator} for this world.
+     *
+     * @return The world generator
+     */
+    WorldGenerator getWorldGenerator();
+
+    /**
+     * Sets the {@link WorldGenerator} for this world to use to create new
+     * chunks.
+     *
+     * @param generator The new generator
+     */
+    void setWorldGenerator(WorldGenerator generator);
+
+    /**
+     * Returns whether this {@link World}'s spawn chunks remain loaded when no players are present.
+     * Note: This method will default to this {@link World}'s {@link DimensionType}'s
+     * keepLoaded value unless a plugin overrides it.
+     *
+     * @return True if {@link World} remains loaded without players, false if not
+     */
+    boolean doesKeepSpawnLoaded();
+
+    /**
+     * Sets whether this {@link World}'s spawn chunks remain loaded when no players are present.
+     * Note: This method will override the default {@link DimensionType}'s keepLoaded
+     * value.
+     *
+     * @param keepLoaded Whether this {@link World}'s spawn chunks remain loaded without players
+     */
+    void setKeepSpawnLoaded(boolean keepLoaded);
+
+    /**
+     * Gets the associated {@link WorldStorage} persisting this world.
+     *
+     * @return The associated world storage
+     */
+    WorldStorage getWorldStorage();
 
 }

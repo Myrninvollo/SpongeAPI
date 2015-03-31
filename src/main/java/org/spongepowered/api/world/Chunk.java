@@ -25,27 +25,64 @@
 
 package org.spongepowered.api.world;
 
-import org.spongepowered.api.entity.EntityUniverse;
+import com.flowpowered.math.vector.Vector3i;
+import org.spongepowered.api.world.extent.Extent;
 
 /**
- * Chunks are 16x256x16 (x/y/z) containers of {@link Block}s
- * in a specific {@link World}. Chunks use chunk coordinates, which are simply
- * block coordinates divided by 16 (one chunk every 16 blocks).
+ * A chunk is a specific grid-aligned partition of a {@link Extent}.
+ *
+ * <p>In Minecraft, the chunk is 16 by 16 blocks on the X and Z axes. The height
+ * of each chunk varies between worlds.</p>
  */
-public interface Chunk extends EntityUniverse, VoxelVolume {
+public interface Chunk extends Extent {
 
     /**
-     * Gets the x chunk coordinate of this chunk as it appears in the {@link World}.
+     * Get the position of the chunk.
      *
-     * @return X chunk coordinate
+     * <p>The returned position is 3-dimensional with the Y-coordinate set to
+     * be the base (lowest) Y-position of the chunk. As 3-dimensional chunks
+     * do not yet exist in Minecraft, the returned position will always have
+     * a {@code y} set to 0.</p>
+     *
+     * @return The position
      */
-    int getX();
+    Vector3i getPosition();
 
     /**
-     * Gets the z chunk coordinate of this chunk as it appears in the {@link World}.
+     * Gets whether or not this chunk is currently loaded.
      *
-     * @return Z chunk coordinate
+     * @return Whether or not this chunk is loaded
      */
-    int getZ();
+    boolean isLoaded();
 
+    /**
+     * Gets the world the chunk is in.
+     *
+     * @return The world
+     */
+    World getWorld();
+
+    /**
+     * Gets if the chunk has been populated by the generator.
+     *
+     * @return Whether or not the chunk has been populated.
+     */
+    boolean isPopulated();
+
+    /**
+     * Loads this chunk, and generates if specified and required.
+     *
+     * @param generate Whether or not to generate the chunk
+     *                 if it does not yet exist
+     *
+     * @return If the chunk was successfully loaded
+     */
+    boolean loadChunk(boolean generate);
+
+    /**
+     * Unloads this chunk, if possible.
+     *
+     * @return Whether or not the chunk unloaded
+     */
+    boolean unloadChunk();
 }

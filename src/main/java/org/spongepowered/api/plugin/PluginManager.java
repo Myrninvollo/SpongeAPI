@@ -25,22 +25,33 @@
 
 package org.spongepowered.api.plugin;
 
-import org.apache.logging.log4j.Logger;
+import com.google.common.base.Optional;
+import org.slf4j.Logger;
 
 import java.util.Collection;
 
-import javax.annotation.Nullable;
-
+/**
+ * The manager that manages plugins. This manager can retrieve {@link
+ * PluginContainer}s from {@link Plugin} instances, getting {@link Logger}s,
+ * etc.
+ */
 public interface PluginManager {
+
+    /**
+     * Get the plugin container from an instance.
+     *
+     * @param instance The instance
+     * @return The container
+     */
+    Optional<PluginContainer> fromInstance(Object instance);
 
     /**
      * Retrieves a {@link PluginContainer} based on its ID.
      *
      * @param id The plugin ID
-     * @return The plugin or null if not found
+     * @return The plugin, if available
      */
-    @Nullable
-    PluginContainer getPlugin(String id);
+    Optional<PluginContainer> getPlugin(String id);
 
     /**
      * Gets the {@link Logger} for the {@link PluginContainer}.
@@ -51,10 +62,19 @@ public interface PluginManager {
     Logger getLogger(PluginContainer plugin);
 
     /**
-     * Gets a {@link Collection} of all {@link PluginContainer}s
+     * Gets a {@link Collection} of all {@link PluginContainer}s.
      *
      * @return The plugins
      */
     Collection<PluginContainer> getPlugins();
+
+    /**
+     * Checks if a plugin is loaded based on its ID.
+     * This may contain plugins/mods from other systems in some implementations.
+     *
+     * @param id the id of the {@link Plugin}
+     * @return {@code true} if loaded {@code false} if not loaded.
+     */
+    boolean isLoaded(String id);
 
 }
